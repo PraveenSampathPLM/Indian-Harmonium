@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Indian Harmonium</title>
+    <link rel="stylesheet" href="/public/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Indian Harmonium</p>
+          <h1>Indian Harmonium</h1>
+        </div>
+        <button id="startButton" class="primary-button">Start Harmonium</button>
+      </section>
+
+      <section class="status-grid">
+        <article class="card">
+          <p class="label">Bellows pressure</p>
+          <div class="meter">
+            <div id="pressureFill" class="meter-fill"></div>
+          </div>
+          <p id="pressureValue" class="metric">0%</p>
+        </article>
+        <article class="card">
+          <p class="label">Lid angle</p>
+          <p id="lidState" class="metric">Waiting for macOS...</p>
+          <p id="lidMeta" class="hint">Waiting for live angle feed...</p>
+        </article>
+        <article class="card pump-card">
+          <p class="label">Manual pump</p>
+          <button id="pumpButton" class="pump-button">Pump Bellows</button>
+        </article>
+      </section>
+
+      <section class="drone-bar card">
+        <p class="label">Drone stops</p>
+        <div class="toggle-row">
+          <button class="toggle-button" data-drone="sa">Sa</button>
+          <button class="toggle-button" data-drone="pa">Pa</button>
+          <button class="toggle-button" data-drone="saHigh">Sa'</button>
+        </div>
+      </section>
+
+      <section class="keyboard-panel">
+        <div id="keyboard" class="keyboard" aria-label="Indian harmonium keyboard"></div>
+      </section>
+    </main>
+
+    <script type="module" src="/public/app.js"></script>
+  </body>
+</html>
