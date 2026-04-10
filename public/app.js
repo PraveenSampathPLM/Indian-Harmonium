@@ -43,6 +43,7 @@ let lastLidChange = 0;
 let lidOpen = true;
 let lidAngle = null;
 let animationStarted = false;
+let usingRemoteFallback = false;
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
@@ -230,6 +231,8 @@ function updateLidState(state) {
   lidMetaEl.textContent =
     state.sensorMode === "angle"
       ? `Live angle from ${state.source} | ${lidOpen ? "open" : "near closed"}`
+      : state.source === "vercel-fallback"
+        ? "Cloud deployment: use manual pump"
       : state.source === "ioreg"
         ? "Falling back to macOS `AppleClamshellState`"
         : "Using manual fallback state";
@@ -249,6 +252,7 @@ async function fetchInitialLidState() {
     const response = await fetch("/api/lid");
     const state = await response.json();
     updateLidState({ ...state, pulse: false });
+    usingRemoteFallback = state.source === "vercel-fallback";
   } catch {
     lidStateEl.textContent = "Unavailable";
     lidMetaEl.textContent = "Could not read sensor state. Manual pump still works.";
@@ -257,9 +261,18 @@ async function fetchInitialLidState() {
 
 function connectLidStream() {
   fetchInitialLidState();
+  if (window.location.hostname.endsWith(".vercel.app")) {
+    return;
+  }
   const events = new EventSource("/events");
   events.onmessage = (event) => {
     updateLidState(JSON.parse(event.data));
+  };
+  events.onerror = () => {
+    if (!usingRemoteFallback) {
+      lidMetaEl.textContent = "Live stream unavailable. Manual pump still works.";
+    }
+    events.close();
   };
 }
 

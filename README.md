@@ -29,3 +29,7 @@ Then open [http://localhost:4321](http://localhost:4321).
 ## Lid Sensor Note
 
 This version now attempts true lid-angle readings through `pybooklid`, which can provide live degree values on supported MacBooks. If the angle feed is unavailable or temporarily noisy, the app falls back to `AppleClamshellState` from macOS so the harmonium still works.
+
+## Vercel Deployment Note
+
+When deployed to Vercel, the app cannot access your Mac's local lid-angle hardware. The deployed version automatically falls back to manual bellows pumping, while local runs still use the live lid sensor.
